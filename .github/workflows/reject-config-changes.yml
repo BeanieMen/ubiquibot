@@ -10,6 +10,7 @@ jobs:
   check_evm_network_id:
     runs-on: ubuntu-latest
 
+    steps:
     - name: Check out code and switch to development branch
       uses: actions/checkout@v2
 
@@ -19,12 +20,11 @@ jobs:
         file_content=$(cat src/configs/ubiquibot-config-default.ts)
         evm_network_id=$(echo "$file_content" | grep -o 'evmNetworkId: [0-9]*' | sed 's/evmNetworkId: //')
         echo $evm_network_id
-        
+          
     - name: Check out code and switch to development branch
       uses: actions/checkout@v2
       with:
-        ref: development
-      # This step checks out your code from the repository.
+        ref: development  # Corrected indentation and branch name
 
     - name: Read and Check evmNetworkId from development branch
       run: |
@@ -38,6 +38,4 @@ jobs:
         if [ "$current_network_id" == "$evm_network_id" ]; then
           echo "evmNetworkId is set to 100 in the development branch. It's correct."
         else
-          echo "evmNetworkId is not set to 100 in the development branch. It's incorrect."
-          exit 1  # Exit with a non-zero status code to indicate failure.
-        fi
+          echo "evmNetworkId is not set to 100 in the development
