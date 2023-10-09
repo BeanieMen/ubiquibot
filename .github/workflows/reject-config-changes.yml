@@ -2,10 +2,7 @@ name: Check PR for evmNetworkId Change
 
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize  # Trigger on PR open and when changes are pushed to the PR
-
+   
 jobs:
   check_evm_network_id:
     runs-on: ubuntu-latest
