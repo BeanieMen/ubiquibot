@@ -1,0 +1,23 @@
+name: Process Changed Files
+
+on:
+  push: # Trigger the workflow on code pushes
+
+jobs:
+  process_changed_files:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2  # This step checks out your code from the repository.
+
+    - name: Get changed files
+      id: files
+      uses: jitterbit/get-changed-files@v1
+
+    - name: Process changed files
+      run: |
+        for changed_file in ${{ steps.files.outputs.all }}; do
+          echo "Do something with this ${changed_file}."
+          # You can add your custom commands here to process the changed files.
+        done
