@@ -33,7 +33,7 @@ jobs:
         # Use regular expression to extract the evmNetworkId value
         current_network_id=$(echo "$file_content" | grep -o 'evmNetworkId: [0-9]*' | sed 's/evmNetworkId: //')
         echo $current_network_id
-        # Check the evmNetworkId value
+        echo $evm_network_id
         if [ "$current_network_id" == "$evm_network_id" ]; then
           echo "evmNetworkId is set to 100 in the development branch. It's correct."
         else
