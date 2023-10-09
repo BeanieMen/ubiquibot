@@ -28,7 +28,6 @@ jobs:
 
     - name: Read and Check evmNetworkId from development branch
       run: |
-        # Read the content of the file from the development branch
         file_content=$(cat src/configs/ubiquibot-config-default.ts)
         # Use regular expression to extract the evmNetworkId value
         current_network_id=$(echo "$file_content" | grep -o 'evmNetworkId: [0-9]*' | sed 's/evmNetworkId: //')
