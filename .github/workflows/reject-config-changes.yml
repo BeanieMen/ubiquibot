@@ -17,14 +17,24 @@ jobs:
     - name: Check if evmNetworkId has changed in PR
       run: |
         # Capture the current and previous versions of the evmNetworkId property
-        current_network_id=$(grep -o 'evmNetworkId: [0-9]*' ${{ github.workspace }}/src/configs/ubiquibot-config-default.ts | cut -d ' ' -f 2)
-        previous_network_id=$(git show ${{ github.event.before }}:src/configs/ubiquibot-config-default.ts | grep -o 'evmNetworkId: [0-9]*' | cut -d ' ' -f 2)
+        file_content=$(cat src/configs/ubiquibot-config-default.ts)
+        evm_network_id=$(echo "$file_content" | grep -o 'evmNetworkId: [0-9]*' | sed 's/evmNetworkId: //')
+        echo $evm_network_id
+    - name: Switch to development branch
+      run: git checkout development  # Adjust the branch name as needed
+
+    - name: Read and Check evmNetworkId from development branch
+      run: |
+        # Read the content of the file from the development branch
+        file_content=$(cat src/configs/ubiquibot-config-default.ts)
+
+        # Use regular expression to extract the evmNetworkId value
+        current_network_id=$(echo "$file_content" | grep -o 'evmNetworkId: [0-9]*' | sed 's/evmNetworkId: //')
         echo $current_network_id
-        echo $previous_network_id
-        # Compare the current and previous versions
-        if [ "$current_network_id" != "$previous_network_id" ]; then
-          echo "evmNetworkId has changed from $previous_network_id to $current_network_id in this PR."
-          # You can add further actions or notifications here if needed.
+        # Check the evmNetworkId value
+        if [ "$current_network_id" == "$evm_network_id" ]; then
+          echo "evmNetworkId is set to 100 in the development branch. It's correct."
         else
-          echo "evmNetworkId has not changed in this PR."
+          echo "evmNetworkId is not set to 100 in the development branch. It's incorrect."
+          exit 1  # Exit with a non-zero status code to indicate failure.
         fi
