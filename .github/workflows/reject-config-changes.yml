@@ -27,18 +27,17 @@ jobs:
         ref: development  # Corrected indentation and branch name
 
    - name: Read and Check evmNetworkId from development branch
-     run: |
-       # Read the content of the file from the development branch
-       file_content=$(cat src/configs/ubiquibot-config-default.ts)
+      run: |
+        # Read the content of the file from the development branch
+        file_content=$(cat src/configs/ubiquibot-config-default.ts)
+        # Use regular expression to extract the evmNetworkId value
+        current_network_id=$(echo "$file_content" | grep -o 'evmNetworkId: [0-9]*' | sed 's/evmNetworkId: //')
+        echo $current_network_id
 
-       # Use regular expression to extract the evmNetworkId value
-       current_network_id=$(echo "$file_content" | grep -o 'evmNetworkId: [0-9]*' | sed 's/evmNetworkId: //')
-       echo $current_network_id
-
-      # Check the evmNetworkId value
-       if [ "$current_network_id" == "$evm_network_id" ]; then
-         echo "evmNetworkId is set to 100 in the development branch. It's correct."
-       else
-         echo "evmNetworkId is not set to 100 in the development branch. It's incorrect."
-         exit 1  # Exit with a non-zero status code to indicate failure.
-       fi
+        # Check the evmNetworkId value
+        if [ "$current_network_id" == "$evm_network_id" ]; then
+          echo "evmNetworkId is set to 100 in the development branch. It's correct."
+        else
+          echo "evmNetworkId is not set to 100 in the development branch. It's incorrect."
+          exit 1  # Exit with a non-zero status code to indicate failure.
+        fi
