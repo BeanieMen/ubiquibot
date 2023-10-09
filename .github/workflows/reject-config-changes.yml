@@ -26,7 +26,7 @@ jobs:
       with:
         ref: development  # Corrected indentation and branch name
 
-   - name: Read and Check evmNetworkId from development branch
+    - name: Read and Check evmNetworkId from development branch
       run: |
         # Read the content of the file from the development branch
         file_content=$(cat src/configs/ubiquibot-config-default.ts)
