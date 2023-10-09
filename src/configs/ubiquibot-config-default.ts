@@ -1,7 +1,7 @@
 import { MergedConfig } from "../types";
 
 export const DefaultConfig: MergedConfig = {
-  evmNetworkId: 3,
+  evmNetworkId: 1,
   priceMultiplier: 4,
   issueCreatorMultiplier: 2,
   paymentPermitMaxPrice: 9007199254740991,
