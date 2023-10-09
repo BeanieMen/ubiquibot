@@ -1,23 +1,28 @@
-name: Process Changed Files
+name: Check evmNetworkId Change
 
 on:
-  push: # Trigger the workflow on code pushes
+  push:
+    branches:
+      - main  # Adjust the branch name as needed
 
 jobs:
-  process_changed_files:
+  check_config:
     runs-on: ubuntu-latest
 
     steps:
     - name: Check out code
       uses: actions/checkout@v2  # This step checks out your code from the repository.
 
-    - name: Get changed files
-      id: files
-      uses: jitterbit/get-changed-files@v1
-
-    - name: Process changed files
+    - name: Check if evmNetworkId has changed
       run: |
-        for changed_file in ${{ steps.files.outputs.all }}; do
-          echo "Do something with this ${changed_file}."
-          # You can add your custom commands here to process the changed files.
-        done
+        # Capture the current and previous versions of the evmNetworkId property
+        current_network_id=$(grep -o 'evmNetworkId: [0-9]*' src/configs/ubiquibot-config-default.ts | cut -d ' ' -f 2)
+        previous_network_id=$(git show HEAD^:src/configs/ubiquibot-config-default.ts | grep -o 'evmNetworkId: [0-9]*' | cut -d ' ' -f 2)
+        
+        # Compare the current and previous versions
+        if [ "$current_network_id" != "$previous_network_id" ]; then
+          echo "evmNetworkId has changed from $previous_network_id to $current_network_id."
+          # You can add further actions or notifications here if needed.
+        else
+          echo "evmNetworkId has not changed."
+        fi
