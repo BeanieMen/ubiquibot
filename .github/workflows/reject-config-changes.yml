@@ -1,26 +1,29 @@
-name: Check evmNetworkId Change
+name: Check PR for evmNetworkId Change
 
 on:
-  push:
-    
+  pull_request:
+    types:
+      - opened
+      - synchronize  # Trigger on PR open and when changes are pushed to the PR
+
 jobs:
-  check_config:
+  check_evm_network_id:
     runs-on: ubuntu-latest
 
     steps:
     - name: Check out code
       uses: actions/checkout@v2  # This step checks out your code from the repository.
 
-    - name: Check if evmNetworkId has changed
+    - name: Check if evmNetworkId has changed in PR
       run: |
         # Capture the current and previous versions of the evmNetworkId property
-        current_network_id=$(grep -o 'evmNetworkId: [0-9]*' src/configs/ubiquibot-config-default.ts | cut -d ' ' -f 2)
-        previous_network_id=$(git show HEAD^:src/configs/ubiquibot-config-default.ts | grep -o 'evmNetworkId: [0-9]*' | cut -d ' ' -f 2)
+        current_network_id=$(grep -o 'evmNetworkId: [0-9]*' ${{ github.workspace }}/src/configs/ubiquibot-config-default.ts | cut -d ' ' -f 2)
+        previous_network_id=$(git show ${{ github.event.before }}:src/configs/ubiquibot-config-default.ts | grep -o 'evmNetworkId: [0-9]*' | cut -d ' ' -f 2)
         
         # Compare the current and previous versions
         if [ "$current_network_id" != "$previous_network_id" ]; then
-          echo "evmNetworkId has changed from $previous_network_id to $current_network_id."
+          echo "evmNetworkId has changed from $previous_network_id to $current_network_id in this PR."
           # You can add further actions or notifications here if needed.
         else
-          echo "evmNetworkId has not changed."
+          echo "evmNetworkId has not changed in this PR."
         fi
