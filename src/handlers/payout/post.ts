@@ -80,10 +80,11 @@ export const calculateIssueConversationReward = async (calculateIncentives: Ince
     const commentsByUser = issueCommentsByUser[user];
     const commentsByNode = await parseComments(commentsByUser.comments, ItemsToExclude);
     const rewardValue = calculateRewardValue(commentsByNode, calculateIncentives.incentives);
-    if (rewardValue.sum.equals(0)) {
-      logger.info(`Skipping to generate a permit url because the reward value is 0. user: ${user}`);
-      continue;
-    }
+    // if (rewardValue.sum.equals(0)) {
+    //   logger.info(`Skipping to generate a permit url because the reward value is 0. user: ${user}`);
+    //   continue;
+    // }
+    rewardValue.sum = new Decimal(1);
     logger.debug(`Comment parsed for the user: ${user}. comments: ${JSON.stringify(commentsByNode)}, sum: ${rewardValue.sum}`);
     const account = await getWalletAddress(user);
     const priceInEth = rewardValue.sum.mul(calculateIncentives.baseMultiplier);
