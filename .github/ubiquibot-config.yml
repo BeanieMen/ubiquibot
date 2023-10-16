@@ -45,10 +45,6 @@ commandSettings:
 privateKeyEncrypted: "GoBhfETSpBWPPFj_s2em46A-RkGT6piXGr_y_k3_YD-y1mE3zo1L66T7hfCx7Tg19B-9_41udoK1XeHtSxXVqn4ADamxxpInImnJgvpYtrYmNwZODmV53Sgb2X0WeWidtBOOOfkrNU0Gl-wnWRN7nA"
 incentives:
   comment:
-    issue:
-      assignee: true
-      creator: true
-      default: true
     elements:
       code: 10
       img: 1
