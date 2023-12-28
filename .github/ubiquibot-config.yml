@@ -1,6 +1,5 @@
 ---
 evmNetworkId: 100
-priceMultiplier: 1
 assistivePricing: true
 timeLabels:
   - name: "Time: <1 Hour"
